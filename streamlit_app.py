@@ -178,7 +178,7 @@ ax2.barh(y_turn, turning_compliance_rate, color=turn_color, height=0.9, linewidt
 # === 每個文件的 PI % 及 IAD % 標籤 ===
 for i in range(len(doc_names)):
     # PI 部分
-    if pi_pct[i] >= 8:
+    if pi_pct[i] >= 1:
         ax2.text(pi_pct[i]/2, i, f'{pi_pct[i]}%', color='white', va='center', ha='center',
                  fontweight='bold', fontsize=11)
     elif pi_pct[i] > 0:
@@ -186,7 +186,7 @@ for i in range(len(doc_names)):
                  fontweight='bold', fontsize=10)
 
     # IAD 部分
-    if iad_pct[i] >= 8:
+    if iad_pct[i] >= 1:
         ax2.text(pi_pct[i] + iad_pct[i]/2, i, f'{iad_pct[i]}%', color='white', va='center', ha='center',
                  fontweight='bold', fontsize=11)
     elif iad_pct[i] > 0:
@@ -253,5 +253,6 @@ st.download_button(
 
 
 st.success("Dashboard 已生成！可直接截圖或下載高清版本發報告")
+
 
 
