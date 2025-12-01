@@ -148,7 +148,7 @@ for i, wedge in enumerate(wedges):
         bbox = dict(boxstyle="round,pad=0.5", facecolor='white', edgecolor='gray', alpha=0.95)
     else:
         x = 0.75 * np.cos(np.deg2rad(ang))
-        y = 0.75 * np.sin(np.deg2rad(ang)
+        y = 0.75 * np.sin(np.deg2rad(ang))
         fontsize = 12
         bbox = dict(boxstyle="round,pad=0.4", facecolor='white', alpha=0.9, edgecolor='gray')
 
@@ -231,3 +231,4 @@ st.download_button(
 
 
 st.success("Dashboard 已生成！可直接截圖或下載高清版本發報告")
+
