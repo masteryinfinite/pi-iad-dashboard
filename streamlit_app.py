@@ -15,7 +15,7 @@ st.set_page_config(
 )
 
 # 中英文切換（好體貼不同同事）
-language = st.sidebar.selectbox("Language / 語言", ["中文", "English"])
+language = st.sidebar.selectbox("Language / 語言", ["English", "中文"])
 if language == "中文":
     txt = {
         "title": "壓傷與失禁相關皮膚損傷 (PI/IAD) 臨床總控面板",
@@ -253,6 +253,7 @@ st.download_button(
 
 
 st.success("Dashboard 已生成！可直接截圖或下載高清版本發報告")
+
 
 
 
