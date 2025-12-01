@@ -171,7 +171,7 @@ ax3 = fig.add_subplot(gs[1, :])
 ax3.axis('off')
 ax3.text(0.5, 0.5, txt["footer"], ha='center', va='center', fontsize=28,
          fontweight='bold', color='#2E86C1', alpha=0.8)
-plt.subplots_adjust(top=0.92)  # 整個圖留多啲頂部空間
+plt.subplots_adjust(top=0.82)  # 整個圖留多啲頂部空間
 plt.suptitle(f"PI/IAD Dashboard — {uploaded_file.name.replace('.xlsx','')}",
              fontsize=38, fontweight='bold', y=0.98, color='#0B3D91')
 
@@ -198,4 +198,5 @@ st.download_button(txt['download'], data=buf.getvalue(),
                    mime="image/png")
 
 st.success("Dashboard generated successfully! Share this link with the whole hospital.")
+
 
