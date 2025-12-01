@@ -160,33 +160,55 @@ ax1.add_artist(centre_circle)
 ax1.set_title(f"{txt['skin_title']}\n{txt['total']}: {total_admissions:,}",
               fontsize=24, fontweight='bold', pad=30, color='#1B4F72')
 
-# 2. 文件 + 翻身長條圖
+# 2. 文件 + 翻身長條圖（已補返最右邊嘅「總和 %」）
 ax2 = fig.add_subplot(gs[0, 1])
 y_docs = np.arange(len(doc_names))
 y_turn = len(doc_names) + 1.5
 
-# 堆疊長條
-ax2.barh(y_docs, pi_pct,  color='#E74C3C', height=0.6, label=f"壓傷病人 (n={n_pi})" if language=="中文" else f"PI (n={n_pi})")
-ax2.barh(y_docs, iad_pct, left=pi_pct, color='#9B59B6', height=0.6, label=f"IAD 病人 (n={n_iad})" if language=="中文" else f"IAD (n={n_iad})")
+# 堆疊長條（紅＋紫）
+ax2.barh(y_docs, pi_pct,  color='#E74C3C', height=0.6, edgecolor='black',
+         label=f"壓傷病人 (n={n_pi})" if language=="中文" else f"PI on Admission (n={n_pi})")
+ax2.barh(y_docs, iad_pct, left=pi_pct, color='#9B59B6', height=0.6, edgecolor='black',
+         label=f"IAD 病人 (n={n_iad})" if language=="中文" else f"IAD on Admission (n={n_iad})")
 
 # 翻身長條
 turn_color = '#27AE60' if turning_compliance_rate >= 90 else '#E74C3C'
 ax2.barh(y_turn, turning_compliance_rate, color=turn_color, height=0.9, linewidth=3)
 
-#  # 標籤
+# === 每個文件的 PI % 及 IAD % 標籤 ===
 for i in range(len(doc_names)):
-    if pi_pct[i] > 5:
-        ax2.text(pi_pct[i]/2, i, f'{pi_pct[i]}%', color='white', va='center', ha='center', fontweight='bold')
-    if iad_pct[i] > 5:
-        ax2.text(pi_pct[i] + iad_pct[i]/2, i, f'{iad_pct[i]}%', color='white', va='center', ha='center', fontweight='bold')
+    # PI 部分
+    if pi_pct[i] >= 8:
+        ax2.text(pi_pct[i]/2, i, f'{pi_pct[i]}%', color='white', va='center', ha='center',
+                 fontweight='bold', fontsize=11)
+    elif pi_pct[i] > 0:
+        ax2.text(pi_pct[i] + 2, i, f'{pi_pct[i]}%', color='#E74C3C', va='center', ha='left',
+                 fontweight='bold', fontsize=10)
 
+    # IAD 部分
+    if iad_pct[i] >= 8:
+        ax2.text(pi_pct[i] + iad_pct[i]/2, i, f'{iad_pct[i]}%', color='white', va='center', ha='center',
+                 fontweight='bold', fontsize=11)
+    elif iad_pct[i] > 0:
+        ax2.text(pi_pct[i] + iad_pct[i] + 2, i, f'{iad_pct[i]}%', color='#8E44AD', va='center', ha='left',
+                 fontweight='bold', fontsize=10)
+
+    # 重點來了：補返「總和 %」（你原版最右邊嗰個數字！）
+    total_this_item = pi_pct[i] + iad_pct[i]
+    if total_this_item > 0:
+        ax2.text(total_this_item + 3, i, f'{total_this_item:.1f}%', 
+                 color='#1B4F72', va='center', ha='left', 
+                 fontweight='bold', fontsize=12.5)
+
+# 翻身遵從率標籤
 ax2.text(turning_compliance_rate / 2, y_turn, f'{turning_compliance_rate:.1f}%',
-         color='white', va='center', ha='center', fontweight='bold', fontsize=20)
+         color='white', va='center', ha='center', fontweight='bold', fontsize=21)
 
+# 其餘設定（軸、標題、圖例）
 ax2.set_yticks(np.append(y_docs, y_turn))
 ax2.set_yticklabels(list(doc_names) + ['每2小時翻身\n遵從率' if language=="中文" else 'Q2H Turning\nCompliance'])
 ax2.invert_yaxis()
-ax2.set_xlim(0, 105)
+ax2.set_xlim(0, 115)   # 拉闊啲，俾到總和數字有位
 ax2.set_xlabel("百分比 (%)", fontsize=14, fontweight='bold')
 ax2.set_title(txt['doc_title'], fontsize=20, fontweight='bold', pad=20, color='#1B4F72')
 ax2.grid(axis='x', alpha=0.3, linestyle='--')
@@ -231,4 +253,5 @@ st.download_button(
 
 
 st.success("Dashboard 已生成！可直接截圖或下載高清版本發報告")
+
 
